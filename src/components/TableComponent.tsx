@@ -57,83 +57,85 @@ export const TableComponent = ({ theme, dataConst, species, searchInput }: Props
   }, [searchInput, species]);
   return (
     <>
-      <Table sx={{ width: 1161, height: 457, backgroundColor: "white", boxShadow: " 0px 2px 18px 0px #DDE3EC" }} aria-label="simple table">
-        <TableHead>
-          <TableRow sx={{ height: 42 }}>
-            <TableCell sx={{ width: "43px" }}>
-              <CheckBoxOutlineBlankIcon color="secondary" />
-            </TableCell>
-            <TableCell align="left" sx={{ width: "100px" }}>
-              <Typography variant="subtitle1">Name</Typography>
-            </TableCell>
-            <TableCell align="left" sx={{ width: "83px" }}>
-              <Typography variant="subtitle1">Avatar</Typography>
-            </TableCell>
-            <TableCell align="left" sx={{ width: "40px" }}>
-              <Typography variant="subtitle1">Origin</Typography>
-            </TableCell>
-            <TableCell align="left" sx={{ width: "83px" }}>
-              <Typography variant="subtitle1">Gender</Typography>
-            </TableCell>
-            <TableCell align="left" sx={{ width: "83px" }}>
-              <Typography variant="subtitle1">Status</Typography>
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data
-            ? _DATA.currentData().map((item: Character) => (
-                <TableRow
-                  key={item.name}
-                  sx={{
-                    backgroundColor: item.status === "Dead" ? "#F6F8FA" : "white",
-                  }}
-                >
-                  <TableCell component="th" scope="row">
-                    <CheckBoxOutlineBlankIcon color="secondary" />
-                  </TableCell>
-                  <TableCell align="left">
-                    <NameContainer>
-                      <Box>
-                        <Typography variant="h6">{item.name}</Typography>
-                      </Box>
-                      <Box>
-                        <Typography variant="h6" color={theme.palette.info.light}>
-                          {item.species}
-                        </Typography>
-                      </Box>
-                    </NameContainer>
-                  </TableCell>
-                  <TableCell align="left">
-                    <StyledImg src={item.image} alt="" />
-                  </TableCell>
-                  <TableCell align="left">
-                    <Tooltip title={item.origin.name}>
-                      <Typography variant="h5">{item.origin.name}</Typography>
-                    </Tooltip>
-                  </TableCell>
-                  <TableCell align="left">
-                    <Typography variant="h5">{item.gender}</Typography>
-                  </TableCell>
-                  <TableCell align="left">
-                    <StatusContainer>
-                      <Box>
-                        {item.status === "Alive" ? <CheckCircleOutlineIcon color="success" /> : null}
-                        {item.status === "Dead" ? <ErrorOutlineIcon color="error" /> : null}
-                        {item.status === "unknown" ? <HelpIcon color="secondary" /> : null}
-                      </Box>
-                      <Box>
-                        <Typography variant="h5" color={item.status === "unknown" ? theme.palette.primary.light : theme.palette.success.light}>
-                          {item.status}
-                        </Typography>
-                      </Box>
-                    </StatusContainer>
-                  </TableCell>
-                </TableRow>
-              ))
-            : null}
-        </TableBody>
-      </Table>
+      <Box>
+        <Table sx={{ width: 1161, height: 457, backgroundColor: "white", boxShadow: " 0px 2px 18px 0px #DDE3EC" }} aria-label="simple table">
+          <TableHead>
+            <TableRow sx={{ height: 42 }}>
+              <TableCell sx={{ width: "43px" }}>
+                <CheckBoxOutlineBlankIcon color="secondary" />
+              </TableCell>
+              <TableCell align="left" sx={{ width: "100px" }}>
+                <Typography variant="subtitle1">Name</Typography>
+              </TableCell>
+              <TableCell align="left" sx={{ width: "83px" }}>
+                <Typography variant="subtitle1">Avatar</Typography>
+              </TableCell>
+              <TableCell align="left" sx={{ width: "40px" }}>
+                <Typography variant="subtitle1">Origin</Typography>
+              </TableCell>
+              <TableCell align="left" sx={{ width: "83px" }}>
+                <Typography variant="subtitle1">Gender</Typography>
+              </TableCell>
+              <TableCell align="left" sx={{ width: "83px" }}>
+                <Typography variant="subtitle1">Status</Typography>
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data
+              ? _DATA.currentData().map((item: Character) => (
+                  <TableRow
+                    key={item.name}
+                    sx={{
+                      backgroundColor: item.status === "Dead" ? "#F6F8FA" : "white",
+                    }}
+                  >
+                    <TableCell component="th" scope="row">
+                      <CheckBoxOutlineBlankIcon color="secondary" />
+                    </TableCell>
+                    <TableCell align="left">
+                      <NameContainer>
+                        <Box>
+                          <Typography variant="h6">{item.name}</Typography>
+                        </Box>
+                        <Box>
+                          <Typography variant="h6" color={theme.palette.info.light}>
+                            {item.species}
+                          </Typography>
+                        </Box>
+                      </NameContainer>
+                    </TableCell>
+                    <TableCell align="left">
+                      <StyledImg src={item.image} alt="" />
+                    </TableCell>
+                    <TableCell align="left">
+                      <Tooltip title={item.origin.name}>
+                        <Typography variant="h5">{item.origin.name}</Typography>
+                      </Tooltip>
+                    </TableCell>
+                    <TableCell align="left">
+                      <Typography variant="h5">{item.gender}</Typography>
+                    </TableCell>
+                    <TableCell align="left">
+                      <StatusContainer>
+                        <Box>
+                          {item.status === "Alive" ? <CheckCircleOutlineIcon color="success" /> : null}
+                          {item.status === "Dead" ? <ErrorOutlineIcon color="error" /> : null}
+                          {item.status === "unknown" ? <HelpIcon color="secondary" /> : null}
+                        </Box>
+                        <Box>
+                          <Typography variant="h5" color={item.status === "unknown" ? theme.palette.primary.light : theme.palette.success.light}>
+                            {item.status}
+                          </Typography>
+                        </Box>
+                      </StatusContainer>
+                    </TableCell>
+                  </TableRow>
+                ))
+              : null}
+          </TableBody>
+        </Table>
+      </Box>
       <PaginationContainer>
         <Pagination count={count} page={page} color="secondary" variant="outlined" shape="rounded" onChange={handleChangePagination} />
       </PaginationContainer>
