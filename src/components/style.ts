@@ -1,13 +1,16 @@
 import styled from "@emotion/styled";
 import { Box } from "@mui/material";
 
-export const PageContainer = styled(Box)`
+export const LayoutBox = styled(Box)`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 63px;
-  // height: 100vw;
+  background-color: #f5f8fd;
+  height: 100vw;
 `;
+
+
 export const SearchBox = styled(Box)`
   display: flex;
   flex-direction: column;
