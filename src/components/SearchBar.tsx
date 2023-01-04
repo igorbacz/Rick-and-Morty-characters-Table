@@ -1,22 +1,17 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useContext } from "react";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { SearchBox, HeaderBox, InputsBox, SearchBoxWrapper, PageContainer } from "./style";
-import { TextField, IconButton, Box } from "@mui/material";
+import { TextField, IconButton } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { Character } from "../types";
-import { theme } from "../theme";
-import { TableComponent } from "./TableComponent";
+import { CharactersContext } from "../context/ContextProvider";
 
-type Props = {
-  dataConst: Character[];
-};
+export const SearchBar = () => {
+  const appContext: { searchInput?: string; setSearchInput?: any; species?: string; setSpecies?: any } = useContext(CharactersContext);
 
-export const SearchBar = ({ dataConst }: Props) => {
-  const [searchInput, setSearchInput] = useState("");
-  const [species, setSpecies] = useState("");
+  const { searchInput, setSearchInput, species, setSpecies } = appContext;
 
   const handleChangespecies = (event: any): void => {
     const target = event.target as HTMLInputElement;
@@ -70,9 +65,6 @@ export const SearchBar = ({ dataConst }: Props) => {
           </InputsBox>
         </SearchBox>
       </SearchBoxWrapper>
-      <Box>
-        <TableComponent dataConst={dataConst} theme={theme} species={species} searchInput={searchInput} />
-      </Box>
     </PageContainer>
   );
 };

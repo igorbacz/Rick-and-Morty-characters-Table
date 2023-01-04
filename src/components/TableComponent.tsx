@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -12,49 +12,32 @@ import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import HelpIcon from "@mui/icons-material/Help";
 import usePagination from "../hooks/usePagination";
+import { CharactersContext } from "../context/ContextProvider";
+
 type Props = {
   theme: Theme;
-  dataConst: Character[];
-  species: string;
-  searchInput: string;
 };
 
-export const TableComponent = ({ theme, dataConst, species, searchInput }: Props) => {
-  const [data, setData] = useState<Character[]>([...dataConst]);
+export const TableComponent = ({ theme }: Props) => {
+  //@ts-ignore
+  const appContext: { filteredData: Character[]; setFilteredData: any; species: string; searchInput: string } = useContext(CharactersContext);
+  const { filteredData, setFilteredData, species, searchInput } = appContext;
 
   useEffect(() => {
-    setData(dataConst);
-  }, [dataConst]);
+    setFilteredData(filteredData);
+  }, [species, searchInput]);
 
   const [page, setPage] = useState(1);
   const PER_PAGE = 5;
-  const count = Math.ceil(data.length / PER_PAGE);
+  const count = Math.ceil(filteredData.length / PER_PAGE);
 
-  const _DATA = usePagination(!data ? dataConst : data, PER_PAGE);
+  const _DATA = usePagination(filteredData, PER_PAGE);
 
   const handleChangePagination = (e, p: number) => {
     setPage(p);
     _DATA.jump(p);
   };
 
-  const filteredHandler = () => {
-    if (!species && searchInput) {
-      let characters: Character[] = dataConst.filter((el) => el.name.toLowerCase().includes(searchInput.toLowerCase()));
-      setData(characters);
-    } else if (species && !searchInput) {
-      let characters: Character[] = dataConst.filter((el) => el.species.toLowerCase() === species.toLowerCase());
-      setData(characters);
-    } else if (species && searchInput) {
-      let characters: Character[] = dataConst
-        .filter((el) => el.species.toLowerCase() === species.toLowerCase())
-        .filter((el) => el.name.toLowerCase().includes(searchInput.toLowerCase()));
-      setData(characters);
-    }
-  };
-
-  useEffect(() => {
-    filteredHandler();
-  }, [searchInput, species]);
   return (
     <>
       <Box>
@@ -82,7 +65,7 @@ export const TableComponent = ({ theme, dataConst, species, searchInput }: Props
             </TableRow>
           </TableHead>
           <TableBody>
-            {data
+            {filteredData
               ? _DATA.currentData().map((item: Character) => (
                   <TableRow
                     key={item.name}

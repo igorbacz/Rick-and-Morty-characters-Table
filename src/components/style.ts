@@ -6,7 +6,7 @@ export const PageContainer = styled(Box)`
   flex-direction: column;
   align-items: center;
   gap: 63px;
-  height: 100vw;
+  // height: 100vw;
 `;
 export const SearchBox = styled(Box)`
   display: flex;
