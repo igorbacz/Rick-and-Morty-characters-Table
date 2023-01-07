@@ -1,6 +1,7 @@
 import { theme } from "./theme";
 
 export interface Character {
+  id?: number;
   name: string;
   gender: string;
   image: string;

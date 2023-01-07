@@ -1,38 +1,33 @@
 import { createContext, useEffect, useState } from "react";
 import { Character } from "../types";
-import React, { Dispatch } from "react";
+import React from "react";
 
-// const defaultValue = {
-//   data: [],
-//   filteredData: [],
-//   searchInput: "",
-//   species: "",
-//   setData: (value: string) => void,
-//   filteredHandler: () => {void},
-
-// };
 const CharactersContext = createContext({});
 
 const CharactersProvider = ({ children }) => {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [searchInput, setSearchInput] = useState("");
-  const [species, setSpecies] = useState("");
+  const [species, setSpecies] = useState<string[]>([]);
 
-  const fetchCharacters = async () => {
-    const response = await fetch("https://rickandmortyapi.com/api/character");
-    if (!response.ok) {
-      throw new Error("Could not fetch characters data");
+  const fetchData = async (url: RequestInfo | URL) => {
+    const res = await fetch(url);
+    const result = await res.json();
+    setData((_characters) => {
+      return [..._characters, ...result.results];
+    });
+    if (result.info && result.info.next) {
+      fetchData(result.info.next);
     }
-    const data = await response.json();
-    setData(data.results);
-    setFilteredData(data.results);
-    return data.results;
   };
 
   useEffect(() => {
-    fetchCharacters();
+    fetchData("https://rickandmortyapi.com/api/character");
   }, []);
+
+  useEffect(() => {
+    setFilteredData(data);
+  }, [data]);
 
   useEffect(() => {
     filteredHandler();
@@ -42,14 +37,18 @@ const CharactersProvider = ({ children }) => {
     if (!species && searchInput) {
       let characters: Character[] = data.filter((el) => el.name.toLowerCase().includes(searchInput.toLowerCase()));
       setFilteredData(characters);
-    } else if (species && !searchInput) {
-      let characters: Character[] = data.filter((el) => el.species.toLowerCase() === species.toLowerCase());
+    } else if (species.length > 0 && !searchInput) {
+      console.log(species);
+      let characters: Character[] = data.filter((el) => species.includes(el.species));
       setFilteredData(characters);
-    } else if (species && searchInput) {
+      console.log(characters);
+    } else if (species.length > 0 && searchInput) {
       let characters: Character[] = data
-        .filter((el) => el.species.toLowerCase() === species.toLowerCase())
+        .filter((el) => species.includes(el.species))
         .filter((el) => el.name.toLowerCase().includes(searchInput.toLowerCase()));
       setFilteredData(characters);
+    } else {
+      setFilteredData(data);
     }
   };
   return (

@@ -2,25 +2,31 @@ import React, { ChangeEvent, useContext } from "react";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { SearchBox, HeaderBox, InputsBox, SearchBoxWrapper } from "./style";
 import { TextField, IconButton } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { CharactersContext } from "../context/ContextProvider";
+import Checkbox from "@mui/material/Checkbox";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import ListItemText from "@mui/material/ListItemText";
 
 export const SearchBar = () => {
-  const appContext: { searchInput?: string; setSearchInput?: any; species?: string; setSpecies?: any } = useContext(CharactersContext);
+  const appContext: { searchInput?: string; setSearchInput?: any; species?: any; setSpecies?: any } = useContext(CharactersContext);
 
   const { searchInput, setSearchInput, species, setSpecies } = appContext;
-
-  const handleChangespecies = (event: any): void => {
-    const target = event.target as HTMLInputElement;
-    setSpecies(target.value);
-  };
+  const speciesArray = ["Alien", "Human"];
 
   const handleChangeSearchInput = (event: ChangeEvent<HTMLInputElement>) => {
     const target = event.target as HTMLInputElement;
     setSearchInput(target.value);
+  };
+
+  const handleChange = (event: SelectChangeEvent<typeof species>) => {
+    const {
+      target: { value },
+    } = event;
+    setSpecies(typeof value === "string" ? value.split(",") : value);
   };
 
   return (
@@ -45,20 +51,23 @@ export const SearchBar = () => {
             }}
             sx={{ width: "140px", borderRadius: "5px" }}
           />
-          <FormControl size="small">
-            <InputLabel id="demo-simple-select-label">Species</InputLabel>
+          <FormControl>
+            <InputLabel id="demo-multiple-checkbox-label">Tag</InputLabel>
             <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
+              labelId="demo-multiple-checkbox-label"
+              id="demo-multiple-checkbox"
+              multiple
               value={species}
-              label="Species"
-              onChange={handleChangespecies}
-              size="small"
-              sx={{ width: "140px", borderRadius: "5px" }}
-              color="secondary"
+              onChange={handleChange}
+              input={<OutlinedInput label="Tag" />}
+              renderValue={(species) => species.join(", ")}
             >
-              <MenuItem value={"Human"}>Human</MenuItem>
-              <MenuItem value={"Alien"}>Alien</MenuItem>
+              {speciesArray.map((name) => (
+                <MenuItem key={name} value={name}>
+                  <Checkbox checked={speciesArray.indexOf(name) > -1} />
+                  <ListItemText primary={name} />
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
         </InputsBox>

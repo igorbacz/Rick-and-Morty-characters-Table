@@ -68,7 +68,7 @@ export const TableComponent = ({ theme }: Props) => {
             {filteredData
               ? _DATA.currentData().map((item: Character) => (
                   <TableRow
-                    key={item.name}
+                    key={item.id}
                     sx={{
                       backgroundColor: item.status === "Dead" ? "#F6F8FA" : "white",
                     }}

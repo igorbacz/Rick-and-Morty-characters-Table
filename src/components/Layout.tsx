@@ -1,4 +1,3 @@
-import { Box } from "@mui/material";
 import React, { ReactNode } from "react";
 import { LayoutBox } from "./style";
 
