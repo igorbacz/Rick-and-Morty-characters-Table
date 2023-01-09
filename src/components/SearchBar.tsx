@@ -10,7 +10,6 @@ import { CharactersContext } from "../context/ContextProvider";
 import Checkbox from "@mui/material/Checkbox";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import ListItemText from "@mui/material/ListItemText";
-import styled from "@emotion/styled";
 
 export const SearchBar = () => {
   const appContext: { searchInput?: string; setSearchInput?: any; species?: any; setSpecies?: any } = useContext(CharactersContext);

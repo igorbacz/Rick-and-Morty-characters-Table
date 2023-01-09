@@ -34,7 +34,7 @@ const CharactersProvider = ({ children }) => {
   }, [searchInput, species]);
 
   const filteredHandler = () => {
-    if (!species && searchInput) {
+    if (species.length === 0 && searchInput) {
       let characters: Character[] = data.filter((el) => el.name.toLowerCase().includes(searchInput.toLowerCase()));
       setFilteredData(characters);
     } else if (species.length > 0 && !searchInput) {
